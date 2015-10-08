@@ -17,14 +17,18 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import keith.com.discovery.R;
-import keith.com.discovery.ipc.User;
+import keith.com.discovery.ipc.Book;
+import keith.com.discovery.ipc.UserParcel;
 import keith.com.discovery.ipc.UserManager;
+import keith.com.discovery.ipc.UserSerial;
 
 
 public class MainActivity extends Activity {
     private TextView mTextView;
     private Button mDo;
     private Button mUndo;
+
+    public static final String PARCEL_KEY = "KEY";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +42,10 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 //startActivity(new Intent(MainActivity.this, SecondActivity.class));
+                UserParcel userParcel = new UserParcel(13, "Will", true, new Book("Discovery"));
+
                 Intent intent = new Intent("action1");
+                intent.putExtra(PARCEL_KEY, userParcel);
                 intent.addCategory("c1");
                 intent.setDataAndType(Uri.parse("file://abc"), "text/plain");
                 startActivity(intent);
@@ -48,7 +55,7 @@ public class MainActivity extends Activity {
         mDo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                User user = new User (0, "jake", true);
+                UserSerial user = new UserSerial (0, "jake", true);
                 ObjectOutputStream out = null;
                 try {
                     out = new ObjectOutputStream(
@@ -73,10 +80,10 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 ObjectInputStream in = null;
-                User user = null;
+                UserSerial user = null;
                 try {
                     in = new ObjectInputStream(new FileInputStream("cache.txt"));
-                    user = (User) in.readObject();
+                    user = (UserSerial) in.readObject();
                 } catch (IOException | ClassNotFoundException e) {
                     e.printStackTrace();
                 } finally {
