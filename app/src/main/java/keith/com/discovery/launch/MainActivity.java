@@ -4,12 +4,15 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -29,12 +32,14 @@ public class MainActivity extends Activity {
     private Button mUndo;
 
     public static final String PARCEL_KEY = "KEY";
+    public static final String DIR_PATH = Environment.getExternalStorageDirectory() + "/test1.txt";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         UserManager.sUserId = 2;
+        persisToFile();
         mTextView = (TextView) findViewById(R.id.text);
         mDo = (Button) findViewById(R.id.doSerializable);
         mUndo = (Button) findViewById(R.id.undoSerializable);
@@ -55,7 +60,7 @@ public class MainActivity extends Activity {
         mDo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserSerial user = new UserSerial (0, "jake", true);
+                /*UserSerial user = new UserSerial (0, "jake", true);
                 ObjectOutputStream out = null;
                 try {
                     out = new ObjectOutputStream(
@@ -71,6 +76,28 @@ public class MainActivity extends Activity {
                             e.printStackTrace();
                         }
                     }
+                }*/
+
+                UserParcel userParcel = null;
+                File cacheFile = new File(DIR_PATH);
+                if (cacheFile.exists()) {
+                    ObjectInputStream objectInputStream = null;
+
+                    try {
+                        objectInputStream = new ObjectInputStream(new FileInputStream(DIR_PATH));
+                        userParcel = (UserParcel) objectInputStream.readObject();
+                        Toast.makeText(MainActivity.this, userParcel.userName, Toast.LENGTH_LONG).show();
+                    } catch (IOException | ClassNotFoundException e) {
+                        e.printStackTrace();
+                    } finally {
+                        if (objectInputStream != null)
+                            try {
+                                objectInputStream.close();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                    }
+
                 }
 
             }
@@ -122,5 +149,33 @@ public class MainActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void persisToFile () {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                UserParcel userParcel = new UserParcel(1, "Hello process", true,
+                        new Book("Discovery"));
+                if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+                    File dir = Environment.getExternalStorageDirectory();
+                    ObjectOutputStream objectOutputStream = null;
+                    try {
+                         objectOutputStream =
+                                new ObjectOutputStream(new FileOutputStream(DIR_PATH));
+                        objectOutputStream.writeObject(userParcel);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } finally {
+                        if (objectOutputStream != null)
+                            try {
+                                objectOutputStream.close();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                    }
+                }
+            }
+        }).start();
     }
 }
