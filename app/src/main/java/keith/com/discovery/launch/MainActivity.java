@@ -30,6 +30,7 @@ public class MainActivity extends Activity {
     private TextView mTextView;
     private Button mDo;
     private Button mUndo;
+    private Button mNext;
 
     public static final String PARCEL_KEY = "KEY";
     public static final String DIR_PATH = Environment.getExternalStorageDirectory() + "/test1.txt";
@@ -38,11 +39,18 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        System.out.println(MainActivity.class.getClassLoader() + " ");
         UserManager.sUserId = 2;
-        persisToFile();
         mTextView = (TextView) findViewById(R.id.text);
         mDo = (Button) findViewById(R.id.doSerializable);
         mUndo = (Button) findViewById(R.id.undoSerializable);
+        mNext = (Button) findViewById(R.id.goToMessenger);
+        mNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, MessengerActivity.class));
+            }
+        });
         mTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,46 +68,7 @@ public class MainActivity extends Activity {
         mDo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*UserSerial user = new UserSerial (0, "jake", true);
-                ObjectOutputStream out = null;
-                try {
-                    out = new ObjectOutputStream(
-                            new FileOutputStream("cache.txt"));
-                    out.writeObject(user);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally {
-                    if (out != null) {
-                        try {
-                            out.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }*/
-
-                UserParcel userParcel = null;
-                File cacheFile = new File(DIR_PATH);
-                if (cacheFile.exists()) {
-                    ObjectInputStream objectInputStream = null;
-
-                    try {
-                        objectInputStream = new ObjectInputStream(new FileInputStream(DIR_PATH));
-                        userParcel = (UserParcel) objectInputStream.readObject();
-                        Toast.makeText(MainActivity.this, userParcel.userName, Toast.LENGTH_LONG).show();
-                    } catch (IOException | ClassNotFoundException e) {
-                        e.printStackTrace();
-                    } finally {
-                        if (objectInputStream != null)
-                            try {
-                                objectInputStream.close();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                    }
-
-                }
-
+                persisToFile();
             }
         });
 
@@ -155,15 +124,14 @@ public class MainActivity extends Activity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                UserParcel userParcel = new UserParcel(1, "Hello process", true,
-                        new Book("Discovery"));
+                UserSerial userSerial = new UserSerial(1, "Hello process", true);
                 if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
                     File dir = Environment.getExternalStorageDirectory();
                     ObjectOutputStream objectOutputStream = null;
                     try {
                          objectOutputStream =
                                 new ObjectOutputStream(new FileOutputStream(DIR_PATH));
-                        objectOutputStream.writeObject(userParcel);
+                        objectOutputStream.writeObject(userSerial);
                     } catch (IOException e) {
                         e.printStackTrace();
                     } finally {
