@@ -1,27 +1,36 @@
 /*
  * This file is auto-generated.  DO NOT MODIFY.
  * Original file: E:\\Study\\AndroidStudyProject\\Discovery\\app\\src\\main\\aidl\\keith\\com\\discovery\\IBookManager.aidl
- */
+ *//*
+
 package keith.com.discovery.ipc;
+*/
 /**
  * Created by Keith on 2015/10/11.
- *///import keith.com.discovery.Book;
+ *//*
+//import keith.com.discovery.ipc.aidl.BookSerial;
 
 public interface IBookManagerCopy extends android.os.IInterface
 {
-    /** Local-side IPC implementation stub class. */
+    */
+/** Local-side IPC implementation stub class. *//*
+
     public static abstract class Stub extends android.os.Binder implements keith.com.discovery.IBookManager
     {
         private static final java.lang.String DESCRIPTOR = "keith.com.discovery.IBookManagerCopy";
-        /** Construct the stub at attach it to the interface. */
+        */
+/** Construct the stub at attach it to the interface. *//*
+
         public Stub()
         {
             this.attachInterface(this, DESCRIPTOR);
         }
-        /**
+        */
+/**
          * Cast an IBinder object into an keith.com.discovery.IBookManagerCopy interface,
          * generating a proxy if needed.
-         */
+         *//*
+
         public static keith.com.discovery.IBookManager asInterface(android.os.IBinder obj)
         {
             if ((obj==null)) {
@@ -80,8 +89,10 @@ public interface IBookManagerCopy extends android.os.IInterface
             {
                 return DESCRIPTOR;
             }
-            /*List<Integer> getBookList ();
-                void addNumber (in Integer book);*/
+            */
+/*List<Integer> getBookList ();
+                void addNumber (in Integer bookSerial);*//*
+
             @Override public int getValue() throws android.os.RemoteException
             {
                 android.os.Parcel _data = android.os.Parcel.obtain();
@@ -121,8 +132,11 @@ public interface IBookManagerCopy extends android.os.IInterface
         static final int TRANSACTION_getValue = (android.os.IBinder.FIRST_CALL_TRANSACTION + 0);
         static final int TRANSACTION_getList = (android.os.IBinder.FIRST_CALL_TRANSACTION + 1);
     }
-    /*List<Integer> getBookList ();
-        void addNumber (in Integer book);*/
+    */
+/*List<Integer> getBookList ();
+        void addNumber (in Integer bookSerial);*//*
+
     public int getValue() throws android.os.RemoteException;
     public java.util.List getList() throws android.os.RemoteException;
 }
+*/

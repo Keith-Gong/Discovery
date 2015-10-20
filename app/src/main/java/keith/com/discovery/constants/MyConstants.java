@@ -5,4 +5,5 @@ package keith.com.discovery.constants;
  */
 public class MyConstants {
     public static final int MSG_FROM_CLIENT = 0x0001;
+    public static final int MSG_FROM_SERVICE = 0x0002;
 }

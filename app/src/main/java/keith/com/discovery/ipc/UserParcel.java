@@ -11,13 +11,13 @@ public class UserParcel implements Parcelable {
     public String userName;
     public boolean isMale;
 
-    public Book book;
+    public BookSerial bookSerial;
 
-    public UserParcel(int id, String name, boolean isMale, Book book) {
+    public UserParcel(int id, String name, boolean isMale, BookSerial bookSerial) {
         this.userId = id;
         this.userName = name;
         this.isMale = isMale;
-        this.book = book;
+        this.bookSerial = bookSerial;
     }
 
     @Override
@@ -30,7 +30,7 @@ public class UserParcel implements Parcelable {
         out.writeInt(userId);
         out.writeString(userName);
         out.writeInt(isMale ? 1 : 0);
-        out.writeParcelable(book, 0);
+        out.writeParcelable(bookSerial, 0);
     }
 
     public static final Creator<UserParcel> CREATOR = new Creator<UserParcel>() {
@@ -49,7 +49,7 @@ public class UserParcel implements Parcelable {
         userId = in.readInt();
         userName = in.readString();
         isMale = in.readInt() == 1;
-        book = in.readParcelable(Thread.currentThread().getContextClassLoader());
+        bookSerial = in.readParcelable(Thread.currentThread().getContextClassLoader());
     }
 }
 

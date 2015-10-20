@@ -1,12 +1,14 @@
 package keith.com.discovery;
+import keith.com.discovery.ipc.aidl.Book;
+import keith.com.discovery.IOnNewBookArrivedListener;
 
 /**
  * Created by Keith on 2015/10/11.
  */
-//import keith.com.discovery.Book;
+//import keith.com.discovery.ipc.aidl.BookSerial;
 interface IBookManager {
-    /*List<Integer> getBookList ();
-    void addNumber (in Integer book);*/
-    int getValue ();
-    List getList();
+    List<Book> getBookList ();
+    void addBook (in Book book);
+    void registerListener (IOnNewBookArrivedListener listener);
+    void unregisterListener (IOnNewBookArrivedListener listener);
 }

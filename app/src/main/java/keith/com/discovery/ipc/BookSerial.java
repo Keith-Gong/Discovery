@@ -6,13 +6,13 @@ import android.os.Parcelable;
 /**
  * Created by Keith on 2015/10/9.
  */
-public class Book implements Parcelable {
+public class BookSerial implements Parcelable {
     public String bookName;
 
-    public Book (String name) {
+    public BookSerial(String name) {
         this.bookName = name;
     }
-    private Book (Parcel in) {
+    private BookSerial(Parcel in) {
         bookName = in.readString();
     }
 
@@ -26,15 +26,15 @@ public class Book implements Parcelable {
         dest.writeString(bookName);
     }
 
-    public static Creator<Book> CREATOR = new Creator<Book>() {
+    public static Creator<BookSerial> CREATOR = new Creator<BookSerial>() {
         @Override
-        public Book createFromParcel(Parcel source) {
-            return new Book(source);
+        public BookSerial createFromParcel(Parcel source) {
+            return new BookSerial(source);
         }
 
         @Override
-        public Book[] newArray(int size) {
-            return new Book[size];
+        public BookSerial[] newArray(int size) {
+            return new BookSerial[size];
         }
     };
 }

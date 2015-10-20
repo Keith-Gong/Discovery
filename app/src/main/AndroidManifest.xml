@@ -34,9 +34,20 @@
         <activity android:name=".launch.ThirdActivity"/>
         <activity android:name=".launch.ShareActivity"/>
         <activity android:name=".launch.MessengerActivity"/>
+        <activity android:name=".ipc.BookManagerActivity"/>
+        <activity android:name=".ipc.contentprovider.ProviderActivity"/>
 
-        <service android:name=".service.MessengerService"
-            android:process=":remote"/>
+        <service android:name=".ipc.service.MessengerService"
+            android:process=":remoteService"/>
+
+        <service android:name=".ipc.service.BookManagerService"
+            android:process=":remoteBook"/>
+
+        <provider
+            android:authorities="keith.com.discovery.provider"
+            android:name=".ipc.contentprovider.BookProvider"
+            android:permission="keith.com.PROVIDER"
+            android:process=":provider"/>
 
     </application>
 

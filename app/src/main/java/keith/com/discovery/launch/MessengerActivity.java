@@ -6,17 +6,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
+import android.util.Log;
 
 import keith.com.discovery.R;
 import keith.com.discovery.constants.MyConstants;
-import keith.com.discovery.service.MessengerService;
+import keith.com.discovery.ipc.service.MessengerService;
 
 /**
  * Created by Keith on 2015/10/15.
+ * Client
  */
 public class MessengerActivity extends Activity {
     private static final String TAG = "MessengerActivity";
@@ -29,6 +32,7 @@ public class MessengerActivity extends Activity {
             Bundle data = new Bundle();
             data.putString("msg", "hello, this is a client");
             msg.setData(data);
+            msg.replyTo = mGetReplyMessenger;
             try {
                 mService.send(msg);
             } catch (RemoteException e) {
@@ -41,6 +45,22 @@ public class MessengerActivity extends Activity {
 
         }
     };
+
+    private Messenger mGetReplyMessenger = new Messenger (new MessengerHandler());
+
+    private static class MessengerHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case MyConstants.MSG_FROM_SERVICE : {
+                    Log.v("String !#", msg.getData().getString("reply"));
+                    break;
+                }
+
+                default:super.handleMessage(msg);
+            }
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

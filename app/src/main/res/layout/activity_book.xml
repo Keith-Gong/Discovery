@@ -6,7 +6,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="@android:color/holo_orange_light"
+    android:background="@android:color/holo_red_light"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
@@ -16,7 +16,7 @@
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:text="BookManagerActivity" />
     <Button
         android:id="@+id/doSerializable"
         android:text="Do Serializable"
@@ -34,17 +34,6 @@
         android:text="Go to messenger Activity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-    <Button
-        android:id="@+id/goToBM"
-        android:text="Go to Book Manager Activity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <Button
-        android:id="@+id/goToProvider"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Go to Provider Activity"/>
 
 
 

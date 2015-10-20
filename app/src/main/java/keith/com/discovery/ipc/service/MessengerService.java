@@ -1,7 +1,8 @@
-package keith.com.discovery.service;
+package keith.com.discovery.ipc.service;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -22,7 +23,19 @@ public class MessengerService extends Service{
             switch (msg.what) {
                 case MyConstants.MSG_FROM_CLIENT: {
                     System.out.println(msg);
-                    Log.v("String!", msg.toString());
+                    Log.v("String!", msg.arg1 + "");
+                    String result = msg.getData().getString("msg");
+                    Log.v("String!@", result);
+                    Messenger client = msg.replyTo;
+                    Message replyMessage = Message.obtain(null, MyConstants.MSG_FROM_SERVICE);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("reply", "Got it");
+                    replyMessage.setData(bundle);
+                    try {
+                        client.send(replyMessage);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     break;
                 }
                 default:
