@@ -3,6 +3,7 @@ package keith.com.discovery.ipc.dp;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.net.Uri;
 
 /**
  * Created by Keith on 2015/10/18.
@@ -18,11 +19,11 @@ public class DbOpenHelper extends SQLiteOpenHelper {
         super(context, DB_NAME, null, DB_VERSION);
     }
 
-    private String CREATE_BOOK_TABLE = "CREATE TABLE IF NOT EXISTS" + BOOK_TABLE_NAME +
-            "_id INTEGER PRIMARY KEY," + "name TEXT)";
+    private String CREATE_BOOK_TABLE = "CREATE TABLE IF NOT EXISTS " + BOOK_TABLE_NAME +
+            "(_id INTEGER PRIMARY KEY," + "name TEXT)";
 
-    private String CREATE_USER_TABLE = "CREATE TABLE IF NOT EXISTS" + USER_TABLE_NAME +
-            "_id INTEGER PRIMARY KEY," + "name TEXT," + "sex INT";
+    private String CREATE_USER_TABLE = "CREATE TABLE IF NOT EXISTS " + USER_TABLE_NAME +
+            "(_id INTEGER PRIMARY KEY," + "name TEXT," + "sex INT)";
 
 
     @Override
@@ -35,4 +36,5 @@ public class DbOpenHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
     }
+
 }

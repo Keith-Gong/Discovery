@@ -1,66 +1,1 @@
-package keith.com.discovery.ipc.contentprovider;
-
-import android.content.ContentProvider;
-import android.content.ContentValues;
-import android.content.UriMatcher;
-import android.database.Cursor;
-import android.net.Uri;
-import android.util.Log;
-import android.widget.BaseAdapter;
-import android.widget.SimpleAdapter;
-
-/**
- * Created by Keith on 2015/10/18.
- */
-public class BookProvider extends ContentProvider {
-    private static final String TAG = "BookProvider";
-    private static final String AUTHORITY = "keith.com.discovery.provider";
-
-    public static final Uri BOOK_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/book");
-    public static final Uri USER_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/user");
-
-    public static final int BOOK_URI_CODE = 0;
-    public static final int USER_URI_CODE = 1;
-    private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-
-    static {
-        sUriMatcher.addURI(AUTHORITY, "book", BOOK_URI_CODE);
-        sUriMatcher.addURI(AUTHORITY, "book", USER_URI_CODE);
-    }
-
-    @Override
-    public boolean onCreate() {
-        Log.i(TAG, "provider on create:" + Thread.currentThread().getName());
-        return false;
-    }
-
-    @Override
-    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        Log.i(TAG, "provider on query:" + Thread.currentThread().getName());
-        return null;
-    }
-
-    @Override
-    public String getType(Uri uri) {
-        Log.i(TAG, "provider on getType()");
-        return null;
-    }
-
-    @Override
-    public Uri insert(Uri uri, ContentValues values) {
-        Log.i(TAG, "provider on insert");
-        return null;
-    }
-
-    @Override
-    public int delete(Uri uri, String selection, String[] selectionArgs) {
-        Log.i(TAG, "provider on delete");
-        return 0;
-    }
-
-    @Override
-    public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        Log.i(TAG, "provider on update");
-        return 0;
-    }
-}
+package keith.com.discovery.ipc.contentprovider;import android.content.ContentProvider;import android.content.ContentValues;import android.content.Context;import android.content.UriMatcher;import android.database.Cursor;import android.database.sqlite.SQLiteDatabase;import android.net.Uri;import android.util.Log;import android.widget.BaseAdapter;import android.widget.SimpleAdapter;import keith.com.discovery.ipc.dp.DbOpenHelper;/** * Created by Keith on 2015/10/18. */public class BookProvider extends ContentProvider {    private static final String TAG = "BookProvider";    private static final String AUTHORITY = "keith.com.discovery.provider";    public static final Uri BOOK_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/book");    public static final Uri USER_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/user");    public static final int BOOK_URI_CODE = 0;    public static final int USER_URI_CODE = 1;    private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);    private SQLiteDatabase mDb;    private Context context;    static {        sUriMatcher.addURI(AUTHORITY, "book", BOOK_URI_CODE);        sUriMatcher.addURI(AUTHORITY, "user", USER_URI_CODE);    }    private void initProviderData () {        mDb = new DbOpenHelper(context).getWritableDatabase();        mDb.execSQL("DELETE FROM " + DbOpenHelper.BOOK_TABLE_NAME);        mDb.execSQL("DELETE FROM " + DbOpenHelper.USER_TABLE_NAME);        mDb.execSQL("INSERT INTO BOOK VALUES(3,'ANDROID');");        mDb.execSQL("INSERT INTO BOOK VALUES(4,'IOS');");        mDb.execSQL("INSERT INTO BOOK VALUES(5,'HTML5');");        mDb.execSQL("INSERT INTO USER VALUES(1,'JAKE',1);");        mDb.execSQL("INSERT INTO USER VALUES(2,'MIKE',2);");    }    @Override    public boolean onCreate() {        Log.i(TAG, "provider on create:" + Thread.currentThread().getName());        context = getContext();        initProviderData();        return true;    }    @Override    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,                        String sortOrder) {        Log.i(TAG, "provider on query:" + Thread.currentThread().getName());        String tableName = getTableName(uri);        if (tableName == null) {            throw new IllegalArgumentException("Unsupported Uri:" + uri);        }        return mDb.query(tableName, projection, selection, selectionArgs, null, null, sortOrder, null);    }    @Override    public String getType(Uri uri) {        Log.i(TAG, "provider on getType()");        return null;    }    @Override    public Uri insert(Uri uri, ContentValues values) {        Log.i(TAG, "provider on insert");        String tableName = getTableName(uri);        mDb.insert(tableName, null, values);        context.getContentResolver().notifyChange(uri, null);        return uri;    }    @Override    public int delete(Uri uri, String selection, String[] selectionArgs) {        Log.i(TAG, "provider on delete");        String tableName = getTableName(uri);        int count = mDb.delete(tableName, selection, selectionArgs);        if (count > 0)            getContext().getContentResolver().notifyChange(uri, null);        return count;    }    @Override    public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {        Log.i(TAG, "provider on update");        String tableName = getTableName(uri);        int row = mDb.update(tableName, values, selection, selectionArgs);        if (row > 0)            getContext().getContentResolver().notifyChange(uri, null);        return row;    }    private String getTableName (Uri uri) {        String tableName = null;        switch (sUriMatcher.match(uri)) {            case BOOK_URI_CODE:                tableName = DbOpenHelper.BOOK_TABLE_NAME;                break;            case USER_URI_CODE:                tableName = DbOpenHelper.USER_TABLE_NAME;                break;            default:                break;        }        return tableName;    }}

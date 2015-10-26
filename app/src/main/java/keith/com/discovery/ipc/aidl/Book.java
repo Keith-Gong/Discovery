@@ -14,6 +14,7 @@ public class Book implements Parcelable {
         this.id = id;
         this.bookName = name;
     }
+    public Book () {}
     private Book(Parcel in) {
         id = in.readInt();
         bookName = in.readString();
@@ -41,4 +42,9 @@ public class Book implements Parcelable {
             return new Book[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return this.id + " " + this.bookName;
+    }
 }
