@@ -39,6 +39,8 @@
         <activity android:name=".launch.MessengerActivity"/>
         <activity android:name=".ipc.BookManagerActivity"/>
         <activity android:name=".ipc.contentprovider.ProviderActivity"/>
+        <activity android:name=".view.ViewActivity"/>
+        <activity android:name=".view.DispatchActivity"/>
 
         <service android:name=".ipc.service.MessengerService"
             android:process=":remoteService"/>

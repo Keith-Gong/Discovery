@@ -46,6 +46,18 @@
         android:layout_height="wrap_content"
         android:text="Go to Provider Activity"/>
 
+    <Button
+        android:id="@+id/goToView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Go to view"/>
+
+    <Button
+        android:id="@+id/goToDispatch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Go to dispatch"/>
+
 
 
 </LinearLayout>

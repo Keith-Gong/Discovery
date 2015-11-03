@@ -25,6 +25,8 @@ import keith.com.discovery.ipc.UserParcel;
 import keith.com.discovery.ipc.UserManager;
 import keith.com.discovery.ipc.UserSerial;
 import keith.com.discovery.ipc.contentprovider.ProviderActivity;
+import keith.com.discovery.view.DispatchActivity;
+import keith.com.discovery.view.ViewActivity;
 
 
 public class MainActivity extends Activity {
@@ -34,6 +36,8 @@ public class MainActivity extends Activity {
     private Button mNext;
     private Button mBook;
     private Button mProviderBtn;
+    private Button mGoToView;
+    private Button mGoToDispatch;
 
     public static final String PARCEL_KEY = "KEY";
     public static final String DIR_PATH = Environment.getExternalStorageDirectory() + "/test1.txt";
@@ -50,6 +54,9 @@ public class MainActivity extends Activity {
         mNext = (Button) findViewById(R.id.goToMessenger);
         mBook = (Button) findViewById(R.id.goToBM);
         mProviderBtn = (Button) findViewById(R.id.goToProvider);
+        mGoToView = (Button) findViewById(R.id.goToView);
+        mGoToDispatch = (Button) findViewById(R.id.goToDispatch);
+
         mNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,6 +118,19 @@ public class MainActivity extends Activity {
                 }
                 if (user != null)
                     mTextView.setText(user.userName);
+            }
+        });
+        mGoToView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, ViewActivity.class));
+            }
+        });
+
+        mGoToDispatch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, DispatchActivity.class));
             }
         });
     }
